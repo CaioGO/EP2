@@ -9,27 +9,31 @@ def extrai_naipe(x):
 
 def lista_movimentos_possiveis(x, y):
     dev = []
-    i = 1
-
-    while i <= 4:
+    z = 0
+    i = y
+    while z < len(x):
         if x[y - i] == x[y]:
-            dev.append(i)
-            i += 2
-        elif y == 0:
-            break
-
+            dev.append(z)
+            z += 1
+            i -= 1
         elif x[y - i] != x[y]:
-            if y - i < 0:
-                break
-            elif extrai_valor(x[y - i]) == extrai_valor(x[y]):
-                dev.append(i)
-                i += 2
+            if extrai_valor(x[y - i]) == extrai_valor(x[y]):
+                dev.append(z)
+                z += 1
+                i -= 1
             elif extrai_naipe(x[y - i]) == extrai_naipe(x[y]):
-                dev.append(i)
-                i += 2
+                dev.append(z)
+                z += 1
+                i -= 1
             else:
-                i += 2
+                z += 1
+                i -= 1
         else:
-            i += 2
-
+            z += 1
+            i -= 1
+    
     return dev
+
+x = ['6♥', 'J♥', '9♣', '9♥']
+y = 2
+print(lista_movimentos_possiveis(x, y))
