@@ -22,9 +22,9 @@ def cor(car):
         car = Azul + car + MC
     elif extrai_naipe(car) == '♥':
         car = Vermelho + car + MC
-    elif extrai_naipe(car) == '♦':
-        car = Azul + car + MC
     elif extrai_naipe(car) == '♣':
+        car = Azul + car + MC
+    elif extrai_naipe(car) == '♦':
         car = Vermelho + car + MC
 
     return car
@@ -114,18 +114,24 @@ def g1(bar):
         z += 1
 
 def g2(bar):
-
+    
+    print(g1(bar))
     while possui_movimentos_possiveis(bar):
         v = False
-        print(g1(bar))
 
         try:
             c = int(input("Escolha uma {} (digite um número entre 1 e {}): ".format(Verde + ('carta') + MC ,len(bar))))
             if c < 0 or c > len(bar):
                 v = True
+            else:
+                c = c
+                print(g1(bar))
         except ValueError:
             c = 0
+            print(g1(bar))
             v = True
+            
+            
     
         while v == True:
                 try:
@@ -136,16 +142,9 @@ def g2(bar):
                     v = False
                 
                 else:
+                    print(g1(bar))
                     v = True
-        
-        #while c == '' or c < 1  or c > len(bar):
-            #c = (input("Inválido, digite um número entre 1 e {}: ".format(len(bar))))
-        #if c >= 1 and c <= len(bar):
-            #c = c
-
-        #else:
-            #c = int(input("Inválido, digite um número entre 1 e {}: ".format(len(bar))))
-          
+ 
         i = c - 1
         mov = lista_movimentos_possiveis(bar, i)
         
@@ -161,23 +160,27 @@ def g2(bar):
             if a == 1:
                 bar[i - 3] = bar[i]
                 del(bar[i])
+                print(g1(bar))
                 
             elif a == 2:
                 bar[i - 1] = bar[i]
                 del(bar[i])
+                print(g1(bar))
         
         else:
             for z in mov:
                 if z == 1:
                     bar = empilha(bar, i, i-1)
                     print(len(bar))
+                    print(g1(bar))
                 elif i == 3:
                     bar = empilha(bar, i, i-3)
                     print(len(bar))
+                    print(g1(bar))
         
                 else:
+                    print(g1(bar))
                     print("A carta {} não pode ser movida. Escolha outra carta (digite um número entre 1 e {}): ".format(bar[i], len(bar)))
-                    print(g1(cor(bar)))
     return bar
 
 def g3(bar):
@@ -216,6 +219,11 @@ print("{}. Empilhar a carta sobre a {} anterior.".format((Azul + ('2') + MC), (V
 print("Para que se possa executar um movimento, {} condição da lista deve ser atendida:".format(Vermelho + ('ao menos uma') + MC))
 print("{}. Ambas as cartas possuem o {};".format((Azul + ('1') + MC), (Verde + ('mesmo valor') + MC)))
 print("{}. Ambas cartas possuem o {}.".format((Azul + ('2') + MC), (Verde + ('mesmo naipe') + MC)))
+print('---------------------')
+print(Vermelho + ('PARA DIFICULTAR') + MC)
+print('Os naipes {} e {} possuem a cor {}, e os naipes {} e {} possuem a cor {}'.format((Azul + ('♠') + MC), (Azul + ('♣') + MC), (Azul + ('AZUL') + MC), (Vermelho + ('♥') + MC), (Vermelho + ('♦') + MC), (Vermelho + ('VERMELHA') + MC)))
+print('---------------------')
+print('{}'.format(Verde + ('BOA SORTE') + MC))
 print('---------------------')
 
 
