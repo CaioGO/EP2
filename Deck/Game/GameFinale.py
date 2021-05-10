@@ -3,6 +3,7 @@ import random
 #Cores
 Vermelho   = "\033[1;31m"  
 Azul  = "\033[1;34m"
+Verde = "\033[0;32m"
 MC = "\033[0;0m"
 
 # Extrai o valor 
@@ -14,6 +15,19 @@ def extrai_valor(x):
 def extrai_naipe(x):
     j = x[-1]
     return j
+
+# Coloração
+def cor(car):
+    if extrai_naipe(car) == '♠':
+        car = Azul + car + MC
+    elif extrai_naipe(car) == '♥':
+        car = Vermelho + car + MC
+    elif extrai_naipe(car) == '♦':
+        car = Azul + car + MC
+    elif extrai_naipe(car) == '♣':
+        car = Vermelho + car + MC
+
+    return car
 
 #Criando Deck
 def cria_baralho():
@@ -36,11 +50,10 @@ def cria_baralho():
     random.shuffle(baralho)
     
     for n in range(52):
-        print(baralho[n])
+        print(cor(baralho[n]))
 
     return baralho
 
-print(cria_baralho())
 # Movimentos possíveis
 def lista_movimentos_possiveis(x, y):
     dev = []
@@ -69,18 +82,7 @@ def lista_movimentos_possiveis(x, y):
 
     return dev
 
-# Coloração
-def cor(car):
-    if extrai_naipe(car) == '♠':
-        car = Azul + car + MC
-    elif extrai_naipe(car) == '♥':
-        car = Vermelho + car + MC
-    elif extrai_naipe(car) == '♦':
-        car = Azul + car + MC
-    elif extrai_naipe(car) == '♣':
-        car = Vermelho + car + MC
 
-    return car
 
 # Empilha cartas
 def empilha(b, x, y):
@@ -103,34 +105,57 @@ def possui_movimentos_possiveis(bar):
 def g1(bar):
     
     z = 1
-    
-    print("Situação: ")
-
-    print("------------")
+    print(Verde + ('------------') + MC)
+    print(Verde + ("Situação: ") + MC)
+    print(Verde + ('------------') + MC)
     
     for b in bar:
-        print("{}. {}".format(z,b))
+        print("{}. {}".format(z,cor(b)))
         z += 1
 
 def g2(bar):
 
     while possui_movimentos_possiveis(bar):
-        
-        c = int(input("Escolha uma carta (digite um número entre 1 e {}): ".format(len(bar))))
-        if c < 1 or c > len(bar) or c != " ":
-            c = int(input("Inválido, digite um número entre 1 e {}: ".format(len(bar))))
+        v = False
+        print(g1(bar))
+
+        try:
+            c = int(input("Escolha uma {} (digite um número entre 1 e {}): ".format(Verde + ('carta') + MC ,len(bar))))
+            if c < 0 or c > len(bar):
+                v = True
+        except ValueError:
+            c = 0
+            v = True
+    
+        while v == True:
+                try:
+                    c = int(input("{} Por favor, digite um {} entre 1 e {}. ".format((Vermelho + ('Inválido!')+ MC), (Vermelho + ('NÚMERO')+ MC),len(bar))))
+                except ValueError:
+                        c = 0
+                if c > 0 and c <= len(bar):
+                    v = False
                 
+                else:
+                    v = True
+        
+        #while c == '' or c < 1  or c > len(bar):
+            #c = (input("Inválido, digite um número entre 1 e {}: ".format(len(bar))))
+        #if c >= 1 and c <= len(bar):
+            #c = c
+
+        #else:
+            #c = int(input("Inválido, digite um número entre 1 e {}: ".format(len(bar))))
+          
         i = c - 1
         mov = lista_movimentos_possiveis(bar, i)
-        print(mov)
         
         if len(mov) == 2:
 
-            print("Sobre qual carta você quer empilhar a carta {}? ".format(bar[i]))
+            print("Você deseja empilhar a carta {} sobre qual carta? ".format(cor(bar[i])))
 
-            print("1. {}".format(bar[i - 3]))
+            print("1. {}".format(cor(bar[i - 3])))
 
-            print("2. {}".format(bar[i - 1]))
+            print("2. {}".format(cor(bar[i - 1])))
 
             a = int(input("Escolha (1/2): "))            
             if a == 1:
@@ -152,51 +177,53 @@ def g2(bar):
         
                 else:
                     print("A carta {} não pode ser movida. Escolha outra carta (digite um número entre 1 e {}): ".format(bar[i], len(bar)))
-    
+                    print(g1(cor(bar)))
     return bar
 
 def g3(bar):
 
     if bar > 1:
+        print(Vermelho + ("------------") + MC)
 
-        print("YOU LOSE!")
+        print(Vermelho + ("YOU LOSE!") + MC)
 
-        print("------------")
+        print(Vermelho + ("------------") + MC)
 
-        novo_jogo = str(input("Quer jogar de novamente? (s/n): "))
+        novo_jogo = str(input("Quer jogar de novamente? {}: ".format(Azul + ('(s/n)') + MC)))
 
         return novo_jogo
 
     else:
+        print(Vermelho + ("------------") + MC)
 
-        print("YOU WIN!")
+        print(Verde + ("YOU WIN!") + MC)
 
-        print("------------")
+        print(Vermelho + ("------------") + MC)
 
-        novo_jogo = str(input("Quer de jogar de novamente? (s/n): "))
+        novo_jogo = str(input("Quer jogar de novamente? {}: ".format(Azul + ('(s/n)') + MC)))
 
         return novo_jogo
 
 
 
-print("Paciência Acordeão")
+print(Azul + ("Paciência Acordeão") + MC)
 print("---------------------")
-print("Bem-vindo(a) ao jogo 'Paciência Acordeão', o objetivo é simples:")
-print('As 52 cartas de um baralho são embaralhadas e distribuídas em sequência. O objetivo do jogo é colocar todas as cartas em uma mesma pilha.')
-print("Há apenas dois movimentos possíveis, e são eles:")
-print("1. Empilhar a carta sobre uma imediatamente anterior;")
-print("2. Empilhar a carta sobre a terceira anterior.")
-print("Para que se possa executar um movimento, ao menos uma condição da lista deve ser atendida:")
-print("1. Ambas as cartas possuem o mesmo valor;")
-print("2. Ambas cartas possuem o mesmo naipe.")
+print("{} ao jogo '{}', o objetivo é simples:".format((Verde + ('Bem-vindo(a)') + MC), (Azul + ("Paciência Acordeão") + MC)))
+print('As {} cartas do um baralho são embaralhadas e distribuídas em sequência. O objetivo do jogo é {}.'.format((Azul + ('52') + MC), (Verde + ('colocar todas as cartas em uma mesma pilha') + MC)))
+print("Há apenas {} movimentos possíveis, e são eles:".format(Vermelho + ('dois') + MC))
+print("{}. Empilhar a carta sobre uma {} anterior;".format((Azul + ('1') + MC), (Verde + ('imediatamente') + MC)))
+print("{}. Empilhar a carta sobre a {} anterior.".format((Azul + ('2') + MC), (Verde + ('terceira') + MC)))
+print("Para que se possa executar um movimento, {} condição da lista deve ser atendida:".format(Vermelho + ('ao menos uma') + MC))
+print("{}. Ambas as cartas possuem o {};".format((Azul + ('1') + MC), (Verde + ('mesmo valor') + MC)))
+print("{}. Ambas cartas possuem o {}.".format((Azul + ('2') + MC), (Verde + ('mesmo naipe') + MC)))
 print('---------------------')
 
 
 
-com = int(input("Digite 1 para iniciar o jogo  "))
+com = int(input("Digite {} para iniciar o jogo  ".format(Azul + ('1') + MC)))
 
 while com != 1:
-    com = int(input("Digite 1 para iniciar o jogo "))
+    com = int(input("Digite {} para iniciar o jogo ".format(Azul + ('1') + MC)))
 
 
 f = True
@@ -213,4 +240,4 @@ while f:
     elif f == "n":
         f == False
 
-print("Volte sempre!")
+print(Verde + ("Volte sempre!") + MC)
